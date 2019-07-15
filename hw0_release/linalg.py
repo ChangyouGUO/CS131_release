@@ -14,9 +14,9 @@ def dot_product(a, b):
     Returns:
         out: numpy array of shape (x, x) (scalar if x = 1)
     """
-    out = None
+    out = np.dot(a, b)
     ### YOUR CODE HERE
-    pass
+    #pass
     ### END YOUR CODE
     return out
 
@@ -35,9 +35,13 @@ def complicated_matrix_function(M, a, b):
     Returns:
         out: numpy matrix of shape (x, 1).
     """
-    out = None
+    squeezed_a = np.squeeze(a)
+    squeezed_b = np.squeeze(b)
+    left = dot_product(squeezed_a, squeezed_b)
+    right = dot_product(M, a.T)
+    out = dot_product(left, right)
     ### YOUR CODE HERE
-    pass
+    #pass
     ### END YOUR CODE
 
     return out
@@ -61,9 +65,9 @@ def svd(M):
     s = None
     v = None
     ### YOUR CODE HERE
-    pass
+    #pass
     ### END YOUR CODE
-
+    u, s, v = np.linalg.svd(M, full_matrices=True)
     return u, s, v
 
 
