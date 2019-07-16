@@ -85,9 +85,14 @@ def get_singular_values(M, k):
         singular_values: array of shape (k)
     """
     singular_values = None
+    u = None
+    s = None
+    v = None
+    u, s, v = svd(M)
     ### YOUR CODE HERE
-    pass
+    #pass
     ### END YOUR CODE
+    singular_values = s[0:k]
     return singular_values
 
 
@@ -103,8 +108,10 @@ def eigen_decomp(M):
     """
     w = None
     v = None
+    w, v = np.linalg.eig(M)
+    
     ### YOUR CODE HERE
-    pass
+    #pass
     ### END YOUR CODE
     return w, v
 
@@ -127,7 +134,16 @@ def get_eigen_values_and_vectors(M, k):
     """
     eigenvalues = []
     eigenvectors = []
+    w = None
+    v = None
+    w, v = eigen_decomp(M)
     ### YOUR CODE HERE
-    pass
+    #pass
     ### END YOUR CODE
+    eigenvalues = w[0:k]
+    for i in range(k):
+        tmp = []
+        for j in range(v.shape[0]):
+            tmp.append(v[j, i])
+        eigenvectors.append(tmp)
     return eigenvalues, eigenvectors
