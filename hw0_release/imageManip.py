@@ -20,7 +20,8 @@ def load(image_path):
 
     ### YOUR CODE HERE
     # Use skimage io.imread
-    pass
+    #pass
+    out = io.imread(image_path)
     ### END YOUR CODE
 
     # Let's convert the image to be between the correct range.
@@ -43,11 +44,13 @@ def dim_image(image):
     """
 
     out = None
-
+    out = image.copy()
     ### YOUR CODE HERE
-    pass
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            for k in range(image.shape[2]):
+                out[i, j, k] = 0.5*(image[i, j, k]*image[i, j, k])
     ### END YOUR CODE
-
     return out
 
 
@@ -66,7 +69,7 @@ def convert_to_grey_scale(image):
     out = None
 
     ### YOUR CODE HERE
-    pass
+    out = color.rgb2gray(image)
     ### END YOUR CODE
 
     return out
@@ -84,9 +87,16 @@ def rgb_exclusion(image, channel):
     """
 
     out = None
-
+    out = image.copy()
     ### YOUR CODE HERE
-    pass
+    ### deep copy 
+    ### R:G:B = 0.2 : 0.7 : 0.07
+    if channel == "R":
+        out[:, :, 0] = 0
+    elif channel == "G":
+        out[:, :, 1] = 0
+    elif channel == "B":
+        out[:, :, 2] = 0
     ### END YOUR CODE
 
     return out
