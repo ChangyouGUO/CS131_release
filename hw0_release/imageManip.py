@@ -53,6 +53,18 @@ def dim_image(image):
     ### END YOUR CODE
     return out
 
+def Brighthen_image(image):
+    out = None
+    out = image.copy()
+    ### YOUR CODE HERE
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            for k in range(image.shape[2]):
+                out[i, j, k] = pow(image[i, j, k], 0.5)
+    ### END YOUR CODE
+    return out
+    
+
 
 def convert_to_grey_scale(image):
     """Change image to gray scale.
@@ -117,7 +129,12 @@ def lab_decomposition(image, channel):
     out = None
 
     ### YOUR CODE HERE
-    pass
+    if channel == "L":
+        out = lab[:, :, 0]
+    elif channel == "A":
+        out = lab[:, :, 1]
+    elif channel == "B":
+        out = lab[:, :, 2]
     ### END YOUR CODE
 
     return out
@@ -138,9 +155,13 @@ def hsv_decomposition(image, channel='H'):
     out = None
 
     ### YOUR CODE HERE
-    pass
+    if channel == "H":
+        out = hsv[:, :, 0]
+    elif channel == "S":
+        out = hsv[:, :, 1]
+    elif channel == "V":
+        out = hsv[:, :, 2]
     ### END YOUR CODE
-
     return out
 
 
@@ -163,10 +184,35 @@ def mix_images(image1, image2, channel1, channel2):
     """
 
     out = None
+    out = image1.copy()
+    
+    im1 = image1.copy()
+    im2 = image2.copy()
+    if channel1 == "R":
+        im1[:, :, 0] = 0
+    elif channel1 == "G":
+        im1[:, :, 1] = 0
+    elif channel1 == "B":
+        im1[:, :, 2] = 0
+    
+    if channel2 == "R":
+        im2[:, :, 0] = 0
+    elif channel2 == "G":
+        im2[:, :, 1] = 0
+    elif channel2 == "B":
+        im2[:, :, 2] = 0
     ### YOUR CODE HERE
-    pass
+    
     ### END YOUR CODE
-
+    
+    for i in range(out.shape[0]):
+        for j in range(out.shape[1]):
+            for k in range(out.shape[2]):
+                if(j < out.shape[1]/2):
+                    out[i, j, k] = im1[i, j, k]
+                else:
+                    out[i, j, k] = im2[i, j, k]
+                    
     return out
 
 
@@ -191,9 +237,16 @@ def mix_quadrants(image):
         out: numpy array of shape(image_height, image_width, 3).
     """
     out = None
-
+    out = image.copy()
     ### YOUR CODE HERE
-    pass
+    h = out.shape[0]//2
+    w = out.shape[1]//2
+
+    out[0:h, 0:w, :] = rgb_exclusion(image[0:h, 0:w,:], "R")
+    out[0:h, w:-1, :] = dim_image(image[0:h, w:-1, :])
+    out[h:-1, 0:w, :] = Brighthen_image(image[h:-1, 0:w, :])
+    out[h:-1, w:-1, :] = rgb_exclusion(image[h:-1, w:-1, :], "R") 
+    
     ### END YOUR CODE
 
     return out
